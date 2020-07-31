@@ -1,0 +1,61 @@
+with total as (select count (*) as count_members 
+from member 
+where job_title is not null)
+
+select
+    case 
+        -- Top Levels:
+        
+        --SENIOR
+        when trim(upper(job_title)) like '%SENIOR%' then 'SENIOR'
+        when trim(upper(job_title)) like '%SNR%' then 'SENIOR'
+        when trim(upper(job_title)) like '%SR%' then 'SENIOR'
+        
+        --MANAGER
+        when trim(upper(job_title)) like '%MANA%' then 'MANAGER'
+
+        
+        --DIRECTOR
+        when trim(upper(job_title)) like '%DIR%' then 'DIRECTOR'
+        
+        --ENTRY LEVEL
+        when trim(upper(job_title)) like '%JUNIOR%' then 'ENTRY LEVEL'
+        when trim(upper(job_title)) like '%ASSI%' then 'ENTRY LEVEL'
+        when trim(upper(job_title)) like '%JR%' then 'ENTRY LEVEL'
+        when trim(upper(job_title)) like '%ASSO%' then 'ENTRY LEVEL'
+        
+        --OWNER
+        when trim(upper(job_title)) like '%OWNER%' then 'OWNER'
+        when trim(upper(job_title)) like '%FOUNDER%' then 'OWNER'
+        when trim(upper(job_title)) like '%CEO%' then 'OWNER'
+        when trim(upper(job_title)) like '%CO%' then 'OWNER'
+        when trim(upper(job_title)) like '%CHIEF EX%' then 'OWNER'
+
+        --ALSO:
+        
+        --CXO
+        when trim(upper(job_title)) like '%CXO%' then 'CXO'
+        when trim(upper(job_title)) like '%CUSTOMER EX%' then 'CXO'
+
+        --VP
+        when trim(upper(job_title)) like '%VP%' then 'VP'
+        when trim(upper(job_title)) like '%VICE P%' then 'VP'
+
+        --PARTNER
+        when trim(upper(job_title)) like '%PARTNER%' then 'PARTNER'
+        
+        --INTERN/UNPAID
+        when trim(upper(job_title)) like '%INTERN%' then 'INTERN/UNPAID'
+        when trim(upper(job_title)) like '%APPR%' then 'INTERN/UNPAID'
+        
+        -- else trim(upper(job_title))
+        
+    end as job_title,
+    count(*) as count,
+    cast (count(*) as decimal) / cast (total.count_members as decimal) as "Precentage"
+from member
+join total on true
+-- where upper(job_title) like '%VICE P%'
+group by 1,total.count_members
+order by 2 desc;
+

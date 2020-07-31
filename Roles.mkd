@@ -1,0 +1,62 @@
+with total as (select count (*) as count_members 
+from member 
+where job_title is not null)
+
+select
+    case 
+        -- TOP ROLES:
+        
+        --SOFTWARE ENG
+        when trim(upper(job_title)) like '%SOFTWARE ENG%' then 'SOFTWARE ENG'
+        when trim(upper(job_title)) like '%DEV%' then 'SOFTWARE ENG'
+        when trim(upper(job_title)) like '%FULL%' then 'SOFTWARE ENG'
+        when trim(upper(job_title)) like '%ENGINEER%' then 'SOFTWARE ENG'
+        
+        --MARKETING
+        when trim(upper(job_title)) like '%MARK%' then 'MARKETING'
+        when trim(upper(job_title)) like '%MKG%' then 'MARKETING'
+        when trim(upper(job_title)) like '%MKTG%' then 'MARKETING'
+        when trim(upper(job_title)) like '%MARTECH%' then 'MARKETING'
+        
+        --PRODUCT/PROJECT MANAGEMENT 
+        when trim(upper(job_title)) like '%PRODUCT MGMT%' then 'PRODUCT MANAGEMENT'
+        when trim(upper(job_title)) like '%PRODUCT MANA%' then 'PRODUCT MANAGEMENT'
+        when trim(upper(job_title)) like '%PM%' then 'PRODUCT MANAGEMENT'
+        when trim(upper(job_title)) like '%PROJECT MANA%' then 'PRODUCT MANAGEMENT'
+        
+        --SALES
+        when trim(upper(job_title)) like '%SALE%' then 'SALES'
+        when trim(upper(job_title)) like '%COMMERCE%' then 'SALES'
+
+        --ALSO:
+        
+        --OPERATIONS
+        when trim(upper(job_title)) like '%OPER%' then 'OPERATIONS'
+        when trim(upper(job_title)) like '%OPS%' then 'OPERATIONS'
+        
+        --DESIGNER
+        when trim(upper(job_title)) like '%DES%' then 'DESIGNER'
+        
+        --UX/UI 
+        when trim(upper(job_title)) like '%UX%' then 'DESIGNER'
+        when trim(upper(job_title)) like '%EXPE%' then 'DESIGNER'
+        when trim(upper(job_title)) like '%INTERF%' then 'DESIGNER'
+        
+        --FINANCE
+        when trim(upper(job_title)) like '%FIN%' then 'FINANCE'
+        when trim(upper(job_title)) like '%ECONOMIST%' then 'FINANCE'
+        when trim(upper(job_title)) like '%BROK%' then 'FINANCE'
+        
+        --DATA SCIENCE
+        when trim(upper(job_title)) like '%DATA%' then 'DATA SCIENCE'
+        
+        -- else trim(upper(job_title))
+        
+    end as job_title,
+    count(*) as count,
+    cast (count(*) as decimal) / cast (total.count_members as decimal) as "Precentage"
+from member
+join total on true
+group by 1,total.count_members
+order by 2 desc;
+
